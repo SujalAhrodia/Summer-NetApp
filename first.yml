@@ -5,8 +5,8 @@
     hostname: 192.168.0.101 #ONTAP Cluster
     username: admin 
     password: Netapp1!
-    vserver: vserver1  #vserver
-    aggr: aggr1   #aggregate
+    # vserver: vserver1  #vserver
+    # aggr: aggr1   #aggregate
     vol_name: ansibleVol
   
   tasks:
@@ -14,8 +14,8 @@
     na_ontap_volume:
       state: present
       name: "{{ vol_name }}"
-      vserver: "{{ vserver }}"
-      aggregate_name: "{{ aggr }}"
+      # vserver: "{{ vserver }}"
+      # aggregate_name: "{{ aggr }}"
       size: 10
       size_unit: gb
       policy: default
