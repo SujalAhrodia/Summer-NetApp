@@ -2,17 +2,14 @@
 - hosts: localhost
   name: Volume Action
   vars:
-    hostname: 172.32.0.182 #ONTAP Cluster
+    hostname: 192.168.0.101 #ONTAP Cluster
     username: admin 
-    password: netapp123
+    password: Netapp1!
     vserver: vserver1  #vserver
     aggr: aggr1   #aggregate
     vol_name: ansibleVol
+  
   tasks:
-  - name: Install pip
-    pip:
-      name: netapp-lib
-
   - name: Creating a volume
     na_ontap_volume:
       state: present
