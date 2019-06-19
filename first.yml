@@ -1,27 +1,10 @@
 --- 
 - hosts: localhost
-  name: Volume Action
-  vars:
-    hostname: 192.168.0.101 #ONTAP Cluster
-    username: admin 
-    password: Netapp1!
-    vserver: openstack  #vserver available on the cluster
-    aggr: aggr1   #aggregate
-    vol_name: ansibleVol
+  gather_facts: yes
   
-  tasks:
-  - name: Creating a volume
-    na_ontap_volume:
-      state: present
-      name: "{{ vol_name }}"
-      vserver: "{{ vserver }}"
-      aggregate_name: "{{ aggr }}"
-      size: 10
-      size_unit: gb
-      policy: default
-      junction_path: "/{{ vol_name }}"
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+  tasks: 
+  - name: Install  pip and lxml
+    apt: 
+      name: ['python-pip', 'python3-pip','git']
+      state: latest
+  
