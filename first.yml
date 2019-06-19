@@ -3,10 +3,37 @@
   gather_facts: yes
   become: true
   
+  # vars:
+  #   input: &input
+  #     hostname: "{{ netapp_hostname }}"
+  #     username: "{{ netapp_username }}"
+  #     password: "{{ netapp_password }}"
+  #   # file: globals.yml
+  # vars_files:
+  #   - "{{ file }}"
+
   tasks: 
   - name: Install  pip and git
     apt: 
       name: ['python-pip', 'python3-pip','git']
-      state: latest
+      state: present
   
+  - name: Install netapp-lib
+    pip:
+      name: netapp-lib
+      state: present
+  
+  - name: Get Ontapi version
+    na_ontap_gather_facts:
+      state: info
+      hostname: 192.168.123.3
+      username: "admin"
+      password: "cluster1"
+      https: true
+      ontapi: 32
+      validate_certs: false
+  # - import_role:
+  #     name: na_ontap_cluster_config
+  #   vars:
+  #     <<: *input
 
