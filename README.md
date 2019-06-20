@@ -12,6 +12,6 @@
     ```
   * Clone the repo
     ```shell
-    $ 
+    $ git clone https://github.com/SujalAhrodia/Summer-NetApp.git
     ```
     
