@@ -19,5 +19,11 @@
     $ sudo apt install python-pip
     $ sudo apt install python3-pip
     ```
+  * Add to ansible.cfg
+   ```shell
+   [defaults]
+   roles_path = /etc/ansible/content/
+   deprecation_warnings = False
+   ```
 
     
