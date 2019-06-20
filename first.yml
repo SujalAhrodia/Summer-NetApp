@@ -1,23 +1,9 @@
 --- 
 - hosts: localhost
-  gather_facts: yes
+  gather_facts: no
   become: true
-  
-  # vars:
-  #   input: &input
-  #     hostname: "{{ netapp_hostname }}"
-  #     username: "{{ netapp_username }}"
-  #     password: "{{ netapp_password }}"
-  #   # file: globals.yml
-  # vars_files:
-  #   - "{{ file }}"
 
   tasks: 
-  - name: Install  pip and git
-    apt: 
-      name: ['python-pip', 'python3-pip','git']
-      state: present
-  
   - name: Install netapp-lib
     pip:
       name: netapp-lib
