@@ -2,24 +2,31 @@
 - hosts: localhost
   gather_facts: no
   become: true
-
+  vars:
+    netapp_hostname: 192.168.123.11 #ONTAP Cluster
+    netapp_username: admin 
+    netapp_password: cluster1
   tasks: 
   - name: Install netapp-lib
     pip:
       name: netapp-lib
       state: present
   
-  - name: Get Ontapi version
-    na_ontap_gather_facts:
-      state: info
-      hostname: 192.168.123.3
-      username: "admin"
-      password: "cluster1"
+  - name: Create Aggregates and wait 5 minutes until aggregate is online
+    na_ontap_aggregate:
+      state: present
+      service_state: online
+      name: "{{ item }}"
+      disk_count: 5
+      wait_for_online: True
+      time_out: 300
+      nodes: cluster-1-01
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
       https: true
-      ontapi: 32
       validate_certs: false
-  # - import_role:
-  #     name: na_ontap_cluster_config
-  #   vars:
-  #     <<: *input
+    with_items:
+      - aggr1_cluster01
+      - aggr1_cluster02
 
