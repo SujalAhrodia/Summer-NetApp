@@ -30,3 +30,31 @@
       - aggr1_cluster01
       - aggr1_cluster02
 
+  - name: Create subnet
+    na_ontap_net_subnet:
+      state: present
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+      hostname: "{{ netapp_hostname }}"
+      subnet: 192.168.0.0/24
+      name: Demo
+      ip_ranges: [ '192.168.0.131-192.168.0.192']
+      gateway: 192.168.0.1
+      ipspace: Default
+      broadcast_domain: Default
+      https: true
+      validate_certs: false
+
+  - name: Create SVM
+    na_ontap_svm:
+      state: present
+      name: svm1
+      root_volume: svm1_root
+      root_volume_aggregate: aggr1_cluster01
+      root_volume_security_style: ntfs
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+      # allowed_protocols: nfs, cifs
+      https: true
+      validate_certs: false
