@@ -4,33 +4,37 @@
   become: true
   vars:
     netapp_hostname: 192.168.123.11 #ONTAP Cluster
-    netapp_username: admin 
-    netapp_password: cluster1
+    netapp_username: admin # cluster username
+    netapp_password: cluster1 # cluster pwd
+    netapp_vserver: svm1
+    netapp_node1: cluster-1-01
+    netapp_node2: cluster-1-02
   tasks: 
   - name: Install netapp-lib
     pip:
       name: netapp-lib
       state: present
   
-  - name: Create Aggregates and wait 5 minutes until aggregate is online
+  - name: Create Aggregates and wait 2 minutes until aggregate is online
     na_ontap_aggregate:
       state: present
       service_state: online
-      name: "{{ item }}"
+      unmount_volumes: True
+      name: "{{ item.0 }}"
       disk_count: 5
       wait_for_online: True
-      time_out: 300
-      nodes: cluster-1-01
+      time_out: 120
+      nodes: "{{ item.1 }}"
       hostname: "{{ netapp_hostname }}"
       username: "{{ netapp_username }}"
       password: "{{ netapp_password }}"
       https: true
       validate_certs: false
-    with_items:
-      - aggr1_cluster01
-      - aggr1_cluster02
+    with_together:
+      - ['aggr1_cluster01' , 'aggr1_cluster02'] 
+      - ["{{ netapp_node1 }}" , "{{ netapp_node2 }}"]
 
-  - name: Create subnet
+  - name: Create Subnet
     na_ontap_net_subnet:
       state: present
       username: "{{ netapp_username }}"
@@ -48,13 +52,35 @@
   - name: Create SVM
     na_ontap_svm:
       state: present
-      name: svm1
+      name: "{{ netapp_vserver }}"
       root_volume: svm1_root
       root_volume_aggregate: aggr1_cluster01
       root_volume_security_style: ntfs
       hostname: "{{ netapp_hostname }}"
       username: "{{ netapp_username }}"
       password: "{{ netapp_password }}"
-      # allowed_protocols: nfs, cifs
+      allowed_protocols: [nfs, cifs]
+      https: true
+      validate_certs: false
+  
+  - name: Create Interface
+    na_ontap_interface:
+      state: present
+      interface_name: svm1_cifs_nfs_lif1
+      home_port: e0c
+      home_node: "{{ netapp_node1 }}"
+      role: data
+      protocols: [nfs, cifs]
+      # admin_status: up
+      # failover_policy: local-only
+      firewall_policy: mgmt-nfs
+      # is_auto_revert: true
+      address: 192.168.123.20
+      netmask: 255.255.255.0
+      # force_subnet_association: false
+      vserver: "{{ netapp_vserver }}"
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
       https: true
       validate_certs: false
