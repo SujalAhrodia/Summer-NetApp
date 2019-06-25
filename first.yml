@@ -66,13 +66,13 @@
   - name: Create Interface
     na_ontap_interface:
       state: present
-      interface_name: svm1_cifs_nfs_lif1
+      interface_name: "{{ item.0 }}"
       home_port: e0c
-      home_node: "{{ netapp_node1 }}"
+      home_node: "{{ item.1 }}"
       role: data
       protocols: [nfs, cifs]
       firewall_policy: mgmt-nfs
-      address: 192.168.123.20
+      address: "{{ item.2 }}"
       netmask: 255.255.255.0
       vserver: "{{ netapp_vserver }}"
       hostname: "{{ netapp_hostname }}"
@@ -80,3 +80,7 @@
       password: "{{ netapp_password }}"
       https: true
       validate_certs: false
+    with_together:
+      - ['svm1_cifs_nfs_lif1','svm1_cifs_nfs_lif2']
+      - ["{{ netapp_node1 }}" , "{{ netapp_node2 }}"] 
+      - [192.168.123.20, 192.168.123.21]
