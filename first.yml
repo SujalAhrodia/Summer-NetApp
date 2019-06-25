@@ -84,3 +84,16 @@
       - ['svm1_cifs_nfs_lif1','svm1_cifs_nfs_lif2']
       - ["{{ netapp_node1 }}" , "{{ netapp_node2 }}"] 
       - [192.168.123.20, 192.168.123.21]
+    
+  - name: Create DNS
+    na_ontap_dns:
+      state: present
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+      vserver:  "{{netapp_vserver}}"
+      domains: demo.netapp.com
+      nameservers: 192.168.123.253
+      skip_validation: true
+      https: true
+      validate_certs: false
