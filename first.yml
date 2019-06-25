@@ -31,7 +31,7 @@
       https: true
       validate_certs: false
     with_together:
-      - ['aggr1_cluster01' , 'aggr1_cluster02'] 
+      - ['aggr1_cluster_1_01' , 'aggr1_cluster_1_02'] 
       - ["{{ netapp_node1 }}" , "{{ netapp_node2 }}"]
 
   - name: Create Subnet
@@ -54,7 +54,7 @@
       state: present
       name: "{{ netapp_vserver }}"
       root_volume: svm1_root
-      root_volume_aggregate: aggr1_cluster01
+      root_volume_aggregate: aggr1_cluster_1_01
       root_volume_security_style: ntfs
       hostname: "{{ netapp_hostname }}"
       username: "{{ netapp_username }}"
@@ -71,13 +71,9 @@
       home_node: "{{ netapp_node1 }}"
       role: data
       protocols: [nfs, cifs]
-      # admin_status: up
-      # failover_policy: local-only
       firewall_policy: mgmt-nfs
-      # is_auto_revert: true
       address: 192.168.123.20
       netmask: 255.255.255.0
-      # force_subnet_association: false
       vserver: "{{ netapp_vserver }}"
       hostname: "{{ netapp_hostname }}"
       username: "{{ netapp_username }}"
