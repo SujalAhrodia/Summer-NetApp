@@ -1,0 +1,143 @@
+--- 
+- name: Install netapp-lib
+  pip:
+    name: netapp-lib
+    state: present
+
+- name: Create Aggregates and wait 2 minutes until aggregate is online
+  na_ontap_aggregate:
+    state: present
+    service_state: online
+    unmount_volumes: True
+    name: "{{ item.0 }}"
+    disk_count: 5
+    wait_for_online: True
+    time_out: 120
+    nodes: "{{ item.1 }}"
+    hostname: "{{ netapp_hostname }}"
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    https: true
+    validate_certs: false
+  with_together:
+    - ['aggr1_cluster_1_01' , 'aggr1_cluster_1_02'] 
+    - ["{{ netapp_node1 }}" , "{{ netapp_node2 }}"]
+
+- name: Create Subnet
+  na_ontap_net_subnet:
+    state: present
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    hostname: "{{ netapp_hostname }}"
+    subnet: 192.168.123.0/24
+    name: Demo
+    ip_ranges: [ '192.168.123.131-192.168.123.192']
+    gateway: 192.168.123.1
+    ipspace: Default
+    broadcast_domain: Default
+    https: true
+    validate_certs: false
+
+- name: Create SVM
+  na_ontap_svm:
+    state: present
+    name: "{{ netapp_vserver }}"
+    root_volume: svm1_root
+    root_volume_aggregate: aggr1_cluster_1_01
+    root_volume_security_style: ntfs
+    hostname: "{{ netapp_hostname }}"
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    allowed_protocols: [nfs, cifs]
+    https: true
+    validate_certs: false
+
+- name: Add licenses
+  na_ontap_license:
+    state: present
+    hostname: "{{ netapp_hostname }}"
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    # serial_number: 
+    license_codes: ["{{nfs_code}}","{{cifs_code}}","{{flex_code}}","{{snapm_code}}"]
+    https: true
+    validate_certs: false
+
+- name: Create Interface
+  na_ontap_interface:
+    state: present
+    interface_name: "{{ item.0 }}"
+    home_port: e0c
+    home_node: "{{ item.1 }}"
+    role: data
+    protocols: [nfs, cifs]
+    firewall_policy: mgmt-nfs
+    address: "{{ item.2 }}"
+    netmask: 255.255.255.0
+    vserver: "{{ netapp_vserver }}"
+    hostname: "{{ netapp_hostname }}"
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    https: true
+    validate_certs: false
+  with_together:
+    - ['svm1_cifs_nfs_lif1','svm1_cifs_nfs_lif2']
+    - ["{{ netapp_node1 }}" , "{{ netapp_node2 }}"] 
+    - [192.168.123.20, 192.168.123.21]
+  
+- name: Create DNS
+  na_ontap_dns:
+    state: present
+    hostname: "{{ netapp_hostname }}"
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    vserver:  "{{netapp_vserver}}"
+    domains: demo.netapp.com
+    nameservers: 192.168.123.253
+    skip_validation: true
+    https: true
+    validate_certs: false
+
+- name: Configure LIFS with DNS
+  na_ontap_command:
+    hostname: "{{ netapp_hostname }}"
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    command: ['network', 'interface', 'modify','-vserver', '{{ netapp_vserver }}', '-lif', '{{ item }}', '-dns-zone', 'svm1.demo.netapp.com']
+    https: true
+    validate_certs: false
+  with_items:
+    - svm1_cifs_nfs_lif1
+    - svm1_cifs_nfs_lif2
+
+- name: Create nfs server
+  na_ontap_nfs:
+    state: present
+    hostname: "{{ netapp_hostname }}"
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    vserver:  "{{netapp_vserver}}"
+    service_state: started
+    nfsv3: enabled
+    # nfsv4: disabled
+    # nfsv41: enabled
+    # tcp: disabled
+    # udp: disabled
+    # vstorage_state: disabled
+    # nfsv4_id_domain: example.com
+    https: true
+    validate_certs: false
+
+# - name: Create cifs_server
+#   na_ontap_cifs_server:
+#     state: present
+#     cifs_server_name: svm1
+#     domain: demo.netapp.com
+#     vserver:  "{{ netapp_vserver }}"
+#     hostname: "{{ netapp_hostname }}"
+#     username: "{{ netapp_username }}"
+#     password: "{{ netapp_password }}"
+#     admin_user_name: "{{ netapp_username }}"
+#     admin_password: "{{ netapp_password }}"
+#     https: true
+#     validate_certs: false
