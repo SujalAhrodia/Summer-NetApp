@@ -119,12 +119,6 @@
     vserver:  "{{netapp_vserver}}"
     service_state: started
     nfsv3: enabled
-    # nfsv4: disabled
-    # nfsv41: enabled
-    # tcp: disabled
-    # udp: disabled
-    # vstorage_state: disabled
-    # nfsv4_id_domain: example.com
     https: true
     validate_certs: false
 
@@ -141,3 +135,21 @@
 #     admin_password: "{{ netapp_password }}"
 #     https: true
 #     validate_certs: false
+
+- name: Create ExportPolicyRule
+  na_ontap_export_policy_rule:
+    state: present
+    name: default
+    client_match: 0.0.0.0/0
+    ro_rule: any
+    rw_rule: any
+    rule_index: 1
+    protocol: nfs,cifs
+    super_user_security: any
+    # allow_suid: true
+    vserver: "{{ netapp_vserver }}"
+    hostname: "{{ netapp_hostname }}"
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    https: true
+    validate_certs: false
