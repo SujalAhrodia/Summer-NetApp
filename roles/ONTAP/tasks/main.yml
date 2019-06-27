@@ -153,3 +153,26 @@
     password: "{{ netapp_password }}"
     https: true
     validate_certs: false
+
+- name: Create FlexVol
+  na_ontap_volume:
+    state: present
+    name: "{{ item.0 }}"
+    # is_infinite: False
+    aggregate_name: aggr1_cluster_1_01
+    size: 10
+    size_unit: gb
+    space_guarantee: none
+    policy: default
+    percent_snapshot_space: 5
+    junction_path: /{{ item.1 }}
+    # wait_for_completion: True
+    vserver: "{{ netapp_vserver }}"
+    hostname: "{{ netapp_hostname }}"
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    https: true
+    validate_certs: false
+  with_together:
+    - ["{{netapp_vol1}}" , "{{netapp_vol2}}"]
+    - ['{{netapp_vol1}}' , '{{netapp_vol1}}/users'] 
