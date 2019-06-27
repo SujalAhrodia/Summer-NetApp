@@ -1,0 +1,15 @@
+netapp_hostname: XXXX
+netapp_username: XXXX
+netapp_password: XXXX
+netapp_vserver: XXXX
+netapp_node1: XXXX
+netapp_node2: XXXX
+netapp_vol1: XXXX
+netapp_vol2: XXXX
+
+#licenses
+nfs_code: XXXXXXX
+cifs_code: XXXXXX
+flex_code: XXXXXX
+snapm_code: XXXXXX
+
