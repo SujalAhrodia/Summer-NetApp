@@ -178,20 +178,20 @@
     - ['{{netapp_vol1}}' , '{{netapp_vol1}}/users'] 
 
 #not idempotent 
-- name: Create Qtrees
-  na_ontap_qtree:
-    state: present
-    name: "{{ item }}"
-    flexvol_name: "{{ netapp_vol2 }}"
-    vserver: "{{ netapp_vserver }}"
-    hostname: "{{ netapp_hostname }}"
-    username: "{{ netapp_username }}"
-    password: "{{ netapp_password }}"
-    https: true
-    validate_certs: false
-  with_items:
-    - "{{ netapp_qtree1 }}"
-    - "{{ netapp_qtree2 }}"
+# - name: Create Qtrees
+#   na_ontap_qtree:
+#     state: present
+#     name: "{{ item }}"
+#     flexvol_name: "{{ netapp_vol2 }}"
+#     vserver: "{{ netapp_vserver }}"
+#     hostname: "{{ netapp_hostname }}"
+#     username: "{{ netapp_username }}"
+#     password: "{{ netapp_password }}"
+#     https: true
+#     validate_certs: false
+#   with_items:
+#     - "{{ netapp_qtree1 }}"
+#     - "{{ netapp_qtree2 }}"
   # register: do
 
 # - debug:
@@ -205,5 +205,32 @@
     hostname: "{{ netapp_hostname }}"
     username: "{{ netapp_username }}"
     password: "{{ netapp_password }}"
+    https: true
+    validate_certs: false
+
+- name: Create ExportPolicyRule for rhel1
+  na_ontap_export_policy_rule:
+    state: present
+    name: rhel1-only
+    client_match: 192.168.123.61 #not sure
+    ro_rule: any
+    rw_rule: any
+    rule_index: 1
+    # protocol: nfs,cifs
+    super_user_security: any
+    # allow_suid: true
+    vserver: "{{ netapp_vserver }}"
+    hostname: "{{ netapp_hostname }}"
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    https: true
+    validate_certs: false
+
+- name: Applying rhel policy to qtree
+  na_ontap_command:
+    hostname: "{{ netapp_hostname }}"
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    command: ['volume', 'qtree', 'modify','-vserver', '{{ netapp_vserver }}', '-volume', '{{ netapp_vol2 }}', '-qtree', '{{ netapp_qtree2 }}', '-export-policy', 'rhel1-only']
     https: true
     validate_certs: false
