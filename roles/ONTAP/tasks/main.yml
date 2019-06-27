@@ -176,3 +176,34 @@
   with_together:
     - ["{{netapp_vol1}}" , "{{netapp_vol2}}"]
     - ['{{netapp_vol1}}' , '{{netapp_vol1}}/users'] 
+
+#not idempotent 
+- name: Create Qtrees
+  na_ontap_qtree:
+    state: present
+    name: "{{ item }}"
+    flexvol_name: "{{ netapp_vol2 }}"
+    vserver: "{{ netapp_vserver }}"
+    hostname: "{{ netapp_hostname }}"
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    https: true
+    validate_certs: false
+  with_items:
+    - "{{ netapp_qtree1 }}"
+    - "{{ netapp_qtree2 }}"
+  # register: do
+
+# - debug:
+#     msg: do
+
+- name: Create another Export Policy for the Qtrees
+  na_ontap_export_policy:
+    state: present
+    name: rhel1-only
+    vserver: "{{ netapp_vserver }}"
+    hostname: "{{ netapp_hostname }}"
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    https: true
+    validate_certs: false
