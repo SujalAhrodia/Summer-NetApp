@@ -2,7 +2,7 @@
 
 1. Setting up the environment
   * Cluster with an HA pair running ONTAP 9.5
-  * Jumphost, Ubuntu-18.04.1-desktop-amd64
+  * Jumphost, CentOS-7-x86_64-Minimal-1810
 2. On the jumphost:
   * Clone the repo
     ```shell
@@ -10,15 +10,16 @@
     ```  
   * Install the latest version of ansible(atleast 2.6)
     ```shell
-    $ sudo apt update 
-    $ sudo apt-add-repository ppa:ansible/ansible
-    $ sudo apt install ansible
+    $ yum install ansible
     ```
-  * Install pip for python2 and python3
+  * Install pip for python2 
     ```shell
     $ sudo apt install python-pip
-    $ sudo apt install python3-pip
     ```
+  * Fill the variable-sample file with your details and store it as variables.yml at the same level as main.yml.
+  ```shell
+  
+  ```
 
 
     
