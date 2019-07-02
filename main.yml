@@ -160,7 +160,6 @@
     with_items:
       - "{{ netapp_qtree1 }}"
       - "{{ netapp_qtree2 }}"
-    register: do
 
   - name: Create another Export Policy for the Qtrees
     na_ontap_export_policy:
