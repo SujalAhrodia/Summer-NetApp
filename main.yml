@@ -34,7 +34,6 @@
     with_together:
       - ['aggr1_cluster_1_01' , 'aggr1_cluster_1_02'] 
       - ["{{ netapp_node1 }}" , "{{ netapp_node2 }}"]
-    
 
   - name: Create Subnet
     na_ontap_net_subnet:
@@ -156,12 +155,12 @@
   #     state: present
   #     name: "{{ item }}"
   #     flexvol_name: "{{ netapp_vol2 }}"
-        # <<: *login
-        # <<: *loginv
+  #      <<: *login
+  #      <<: *loginv
   #   with_items:
   #     - "{{ netapp_qtree1 }}"
   #     - "{{ netapp_qtree2 }}"
-    # register: do
+  #   register: do
 
   # - debug:
   #     msg: do
