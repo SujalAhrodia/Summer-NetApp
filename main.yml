@@ -155,8 +155,8 @@
       state: present
       name: "{{ item }}"
       flexvol_name: "{{ netapp_vol2 }}"
-       <<: *login
-       <<: *loginv
+      <<: *login
+      <<: *loginv
     with_items:
       - "{{ netapp_qtree1 }}"
       - "{{ netapp_qtree2 }}"
