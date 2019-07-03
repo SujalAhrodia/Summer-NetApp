@@ -164,14 +164,14 @@
   - name: Create another Export Policy for the Qtrees
     na_ontap_export_policy:
       state: present
-      name: rhel1-only
+      name: jh1-only
       <<: *login
       <<: *loginv
 
-  - name: Create ExportPolicyRule for rhel1
+  - name: Create ExportPolicyRule for jh1
     na_ontap_export_policy_rule:
       state: present
-      name: rhel1-only
+      name: jh1-only
       client_match: 192.168.123.61 #not sure
       ro_rule: any
       rw_rule: any
@@ -182,7 +182,7 @@
       <<: *login
       <<: *loginv
 
-  - name: Applying rhel policy to qtree
+  - name: Applying jh1 policy to qtree
     na_ontap_command:
-      command: ['volume', 'qtree', 'modify','-vserver', '{{ netapp_vserver }}', '-volume', '{{ netapp_vol2 }}', '-qtree', '{{ netapp_qtree2 }}', '-export-policy', 'rhel1-only']
+      command: ['volume', 'qtree', 'modify','-vserver', '{{ netapp_vserver }}', '-volume', '{{ netapp_vol2 }}', '-qtree', '{{ netapp_qtree2 }}', '-export-policy', 'jh1-only']
       <<: *login
