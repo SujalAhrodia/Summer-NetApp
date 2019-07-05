@@ -1,0 +1,52 @@
+---
+- hosts: localhost
+  gather_facts: no
+  become: true
+  vars:
+    login: &login
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+      https: true
+      validate_certs: false
+    loginv: &loginv
+      vserver: "{{ netapp_vserver }}"
+
+  vars_files:
+    - ./variables.yml
+
+  tasks:
+  - name: Install netapp-lib
+    pip:
+      name: netapp-lib
+      state: present
+  
+  - name: Create Aggregates and wait 2 minutes until aggregate is online
+    na_ontap_aggregate:
+      state: present
+      service_state: online
+      unmount_volumes: True
+      name: "{{ item.0 }}"
+      disk_count: 5
+      wait_for_online: True
+      time_out: 120
+      nodes: "{{ item.1 }}"
+      <<: *login
+    with_together:
+      - ['aggr1_cluster_1_01' , 'aggr1_cluster_1_02'] 
+      - ["{{ netapp_node1 }}" , "{{ netapp_node2 }}"]
+  
+  - name: Add licenses
+    na_ontap_license:
+      state: present
+      # serial_number: 
+      license_codes: ["{{nfs_code}}","{{cifs_code}}","{{flex_code}}","{{snapm_code}}"]
+      <<: *login
+
+  - import_role:
+      name: NFS
+      tasks_from: SVM1
+    vars: 
+      <<: *login
+      <<: *loginv
+    when: true 

@@ -1,0 +1,99 @@
+---
+#
+# To-do: Create a new NFS enabled SVM
+# 
+# 1. Create a new SVM with NFS volume
+# 2. Update the export-policy of SVM's root volume
+# 3. Configure LDAP (check?) | Lightweight Directory Access Protocol
+# 4. Verification, NFS access from UNIX host
+# 5. Setting up and verify NFS access from client.
+
+- name: Create a new SVM
+  na_ontap_svm:
+    state: present
+    name: "{{ netapp_vserver }}"
+    root_volume: svm1_root
+    root_volume_aggregate: aggr1_cluster_1_01
+    root_volume_security_style: unix
+    allowed_protocols: [nfs, cifs]
+    hostname: "{{ netapp_hostname }}"
+    username: "{{ netapp_username }}"
+    password: "{{ netapp_password }}"
+    https: true
+    validate_certs: false
+
+  - name: Create Data LIFs
+    na_ontap_interface:
+      state: present
+      interface_name: "{{ item.0 }}"
+      home_port: e0c
+      home_node: "{{ item.1 }}"
+      role: data
+      protocols: [nfs, cifs]
+      firewall_policy: mgmt-nfs
+      address: "{{ item.2 }}"
+      netmask: 255.255.255.0
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+      https: true
+      validate_certs: false
+      vserver: "{{ netapp_vserver }}"
+    with_together:
+      - ["{{ vserver }}_data_lif_1" , "{{ vserver }}_data_lif_2"]
+      - ["{{ netapp_node1 }}" , "{{ netapp_node2 }}"] 
+      - [192.168.123.20, 192.168.123.21]
+
+  - name: Create NFS server
+    na_ontap_nfs:
+      state: present
+      service_state: started
+      nfsv3: enabled
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+      https: true
+      validate_certs: false
+      vserver: "{{ netapp_vserver }}"
+
+  - name: Create ExportPolicyRule
+    na_ontap_export_policy_rule:
+      state: present
+      name: "{{ netapp_vol1 }}"
+      client_match: 0.0.0.0/0
+      ro_rule: any
+      rw_rule: none
+      rule_index: 1
+      protocol: nfs
+      super_user_security: none
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+      https: true
+      validate_certs: false
+      vserver: "{{ netapp_vserver }}"  
+
+  - name: Create FlexVol
+    na_ontap_volume:
+      state: present
+      name: "{{ item.0 }}"
+      aggregate_name: aggr1_cluster_1_01
+      size: 10
+      size_unit: gb
+      space_guarantee: none
+      policy: "{{ netapp_vol1 }}"
+      percent_snapshot_space: 5
+      junction_path: /{{ item.1 }}
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+      https: true
+      validate_certs: false
+      vserver: "{{ netapp_vserver }}"      
+    with_together:
+      - ["{{netapp_vol1}}"]
+      - ["{{netapp_vol1}}"] 
+      
+      
+
+  
