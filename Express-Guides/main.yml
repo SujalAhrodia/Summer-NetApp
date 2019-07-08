@@ -49,7 +49,7 @@
     vars: 
       <<: *login
       <<: *loginv
-    when: 1 == 2 
+    when: true
   
   - import_role:
       name: NFS
@@ -57,4 +57,4 @@
     vars: 
       <<: *login
       <<: *loginv
-    when: true
+    when: 1==2

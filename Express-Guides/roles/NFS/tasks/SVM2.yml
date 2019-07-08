@@ -1,5 +1,7 @@
+---
 #
-# To-do: Existing SVM without NFS enabled
+# Existing SVM without NFS enabled
+#
 # 1. Add NFS access to existing SVM
 # 2. Define export-policy
 # 3. Configure LDAP(optional)
@@ -27,8 +29,8 @@
     role: data
     protocols: [nfs, cifs]
     firewall_policy: mgmt-nfs
-    address: "{{ LIF_address }}"
-    netmask: 255.255.255.0
+    address: "{{ LIF_address1 }}"
+    netmask: "{{ LIF_netmask }}"
     hostname: "{{ netapp_hostname }}"
     username: "{{ netapp_username }}"
     password: "{{ netapp_password }}"
@@ -48,65 +50,4 @@
     https: true
     validate_certs: false
 
-- name: Create Default ExportPolicyRule 
-  na_ontap_export_policy_rule:
-    state: present
-    name: default
-    client_match: 0.0.0.0/0
-    ro_rule: any
-    rw_rule: none
-    rule_index: 1
-    protocol: nfs
-    super_user_security: none
-    hostname: "{{ netapp_hostname }}"
-    username: "{{ netapp_username }}"
-    password: "{{ netapp_password }}"
-    vserver: "{{ netapp_vserver }}"  
-    https: true
-    validate_certs: false
-
-- name: Create Export Policy
-  na_ontap_export_policy:
-    state: present
-    name: "{{ netapp_vol1 }}"
-    vserver: "{{ netapp_vserver }}"
-    hostname: "{{ netapp_hostname }}"
-    username: "{{ netapp_username }}"
-    password: "{{ netapp_password }}"
-    https: true
-    validate_certs: false
-
-- name: Create ExportPolicyRule
-  na_ontap_export_policy_rule:
-    state: present
-    name: "{{ netapp_vol1 }}"
-    client_match: 0.0.0.0/0
-    ro_rule: any
-    rw_rule: any
-    rule_index: 1
-    protocol: nfs
-    super_user_security: any
-    hostname: "{{ netapp_hostname }}"
-    username: "{{ netapp_username }}"
-    password: "{{ netapp_password }}"
-    vserver: "{{ netapp_vserver }}"  
-    https: true
-    validate_certs: false
-
-- name: Create FlexVol
-  na_ontap_volume:
-    state: present
-    name: "{{ netapp_vol1 }}"
-    aggregate_name: aggr1_cluster_1_01
-    size: 10
-    size_unit: gb
-    space_guarantee: none
-    policy: "{{ netapp_vol1 }}"
-    percent_snapshot_space: 5
-    junction_path: /{{ netapp_vol1 }}
-    hostname: "{{ netapp_hostname }}"
-    username: "{{ netapp_username }}"
-    password: "{{ netapp_password }}"
-    vserver: "{{ netapp_vserver }}"      
-    https: true
-    validate_certs: false
+- import_tasks: ./SVM3.yml

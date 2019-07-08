@@ -1,6 +1,6 @@
 ---
 #
-# To-do: Create a new NFS enabled SVM
+# Create a new NFS enabled SVM
 # 
 # 1. Create a new SVM with NFS volume
 # 2. Update the export-policy of SVM's root volume
@@ -31,7 +31,7 @@
     protocols: [nfs, cifs]
     firewall_policy: mgmt-nfs
     address: "{{ item.2 }}"
-    netmask: 255.255.255.0
+    netmask: "{{ LIF_netmask }}"
     hostname: "{{ netapp_hostname }}"
     username: "{{ netapp_username }}"
     password: "{{ netapp_password }}"
@@ -41,7 +41,7 @@
   with_together:
     - ["{{ vserver }}_data_lif_1" , "{{ vserver }}_data_lif_2"]
     - ["{{ netapp_node1 }}" , "{{ netapp_node2 }}"] 
-    - [192.168.123.20, 192.168.123.21]
+    - ["{{ LIF_address1 }}", "{{ LIF_address2 }}"]
 
 - name: Create NFS server
   na_ontap_nfs:
@@ -55,68 +55,4 @@
     https: true
     validate_certs: false
 
-- name: Create Default ExportPolicyRule 
-  na_ontap_export_policy_rule:
-    state: present
-    name: default
-    client_match: 0.0.0.0/0
-    ro_rule: any
-    rw_rule: none
-    rule_index: 1
-    protocol: nfs
-    super_user_security: none
-    hostname: "{{ netapp_hostname }}"
-    username: "{{ netapp_username }}"
-    password: "{{ netapp_password }}"
-    vserver: "{{ netapp_vserver }}"  
-    https: true
-    validate_certs: false
-
-- name: Create Export Policy
-  na_ontap_export_policy:
-    state: present
-    name: "{{ netapp_vol1 }}"
-    vserver: "{{ netapp_vserver }}"
-    hostname: "{{ netapp_hostname }}"
-    username: "{{ netapp_username }}"
-    password: "{{ netapp_password }}"
-    https: true
-    validate_certs: false
-
-- name: Create ExportPolicyRule
-  na_ontap_export_policy_rule:
-    state: present
-    name: "{{ netapp_vol1 }}"
-    client_match: 0.0.0.0/0
-    ro_rule: any
-    rw_rule: any
-    rule_index: 1
-    protocol: nfs
-    super_user_security: any
-    hostname: "{{ netapp_hostname }}"
-    username: "{{ netapp_username }}"
-    password: "{{ netapp_password }}"
-    vserver: "{{ netapp_vserver }}"  
-    https: true
-    validate_certs: false
-
-- name: Create FlexVol
-  na_ontap_volume:
-    state: present
-    name: "{{ netapp_vol1 }}"
-    aggregate_name: aggr1_cluster_1_01
-    size: 10
-    size_unit: gb
-    space_guarantee: none
-    policy: "{{ netapp_vol1 }}"
-    percent_snapshot_space: 5
-    junction_path: /{{ netapp_vol1 }}
-    hostname: "{{ netapp_hostname }}"
-    username: "{{ netapp_username }}"
-    password: "{{ netapp_password }}"
-    vserver: "{{ netapp_vserver }}"      
-    https: true
-    validate_certs: false
-    
-    
-
+- import_tasks: ./SVM3.yml
