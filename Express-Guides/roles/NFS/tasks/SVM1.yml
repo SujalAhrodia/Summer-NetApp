@@ -21,16 +21,16 @@
     https: true
     validate_certs: false
 
-- name: Create Data LIFs
+- name: Create a Data LIF
   na_ontap_interface:
     state: present
-    interface_name: "{{ item.0 }}"
-    home_port: e0c
-    home_node: "{{ item.1 }}"
+    interface_name: "{{ vserver }}_data_lif"
+    home_port: "{{ LIF_homeport }}"
+    home_node: "{{ netapp_node1 }}" # taking the first node as the home node for now
     role: data
     protocols: [nfs, cifs]
     firewall_policy: mgmt-nfs
-    address: "{{ item.2 }}"
+    address: "{{ LIF_address1 }}"
     netmask: "{{ LIF_netmask }}"
     hostname: "{{ netapp_hostname }}"
     username: "{{ netapp_username }}"
@@ -38,10 +38,28 @@
     vserver: "{{ netapp_vserver }}"
     https: true
     validate_certs: false
-  with_together:
-    - ["{{ vserver }}_data_lif_1" , "{{ vserver }}_data_lif_2"]
-    - ["{{ netapp_node1 }}" , "{{ netapp_node2 }}"] 
-    - ["{{ LIF_address1 }}", "{{ LIF_address2 }}"]
+
+# - name: Create Data LIFs
+#   na_ontap_interface:
+#     state: present
+#     interface_name: "{{ item.0 }}"
+#     home_port: e0c
+#     home_node: "{{ item.1 }}"
+#     role: data
+#     protocols: [nfs, cifs]
+#     firewall_policy: mgmt-nfs
+#     address: "{{ item.2 }}"
+#     netmask: "{{ LIF_netmask }}"
+#     hostname: "{{ netapp_hostname }}"
+#     username: "{{ netapp_username }}"
+#     password: "{{ netapp_password }}"
+#     vserver: "{{ netapp_vserver }}"
+#     https: true
+#     validate_certs: false
+#   with_together:
+#     - ["{{ vserver }}_data_lif_1" , "{{ vserver }}_data_lif_2"]
+#     - ["{{ netapp_node1 }}" , "{{ netapp_node2 }}"] 
+#     - ["{{ LIF_address1 }}", "{{ LIF_address2 }}"]
 
 - name: Create NFS server
   na_ontap_nfs:

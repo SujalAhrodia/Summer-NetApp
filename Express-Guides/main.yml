@@ -2,6 +2,25 @@
 - hosts: localhost
   gather_facts: no
   become: true
+  pre_tasks:
+
+    - pause:
+        prompt: "Do you want to create a new NFS-enabled SVM (y/n)?"
+      register: prompt
+
+    - set_fact:
+        NEW: "{{prompt.user_input}}"
+        EXISTING: "n"
+
+    - pause:
+        prompt: "Do you want to configure NFS to an existing SVM (y/n)?"
+      register: prompt
+      when: NEW == 'n'
+    
+    - set_fact:
+        EXISTING: "{{prompt.user_input}}"
+      when: NEW == 'n'
+      
   vars:
     login: &login
       hostname: "{{ netapp_hostname }}"
@@ -11,7 +30,20 @@
       validate_certs: false
     loginv: &loginv
       vserver: "{{ netapp_vserver }}"
+  
+  
+  # vars_prompt:
+  #   - name: "NEW"
+  #     prompt: "Do you want to create a new NFS-enabled SVM (y/n)?"
+  #     # default: n
+  #     private: no
 
+  #   - name: "EXISTING"
+  #     prompt: "Do you want to configure NFS to an existing SVM (y/n)?"
+  #     # default: n
+  #     private: no
+  #     when: NEW != 'y'
+  
   vars_files:
     - ./variables.yml
 
@@ -49,7 +81,7 @@
     vars: 
       <<: *login
       <<: *loginv
-    when: true
+    when: NEW == 'y'
   
   - import_role:
       name: NFS
@@ -57,4 +89,4 @@
     vars: 
       <<: *login
       <<: *loginv
-    when: 1==2
+    when: EXISTING == 'y'
