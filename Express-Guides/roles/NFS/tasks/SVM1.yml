@@ -4,9 +4,8 @@
 # 
 # 1. Create a new SVM with NFS volume
 # 2. Update the export-policy of SVM's root volume
-# 3. Configure LDAP (check?) | Lightweight Directory Access Protocol
+# 3. Configure LDAP (optional) | Lightweight Directory Access Protocol
 # 4. Verification, NFS access from UNIX host
-# 5. Setting up and verify NFS access from client.
 
 - name: Create a new SVM
   na_ontap_svm:

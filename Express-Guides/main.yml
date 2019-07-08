@@ -49,4 +49,12 @@
     vars: 
       <<: *login
       <<: *loginv
-    when: true 
+    when: 1 == 2 
+  
+  - import_role:
+      name: NFS
+      tasks_from: SVM2
+    vars: 
+      <<: *login
+      <<: *loginv
+    when: true
