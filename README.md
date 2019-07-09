@@ -2,6 +2,11 @@
 
 # Summer-NetApp
 
+## Structure
+
+> * main.yml contains the basic ONTAP Lab
+> * All the express guide playbooks are in the Express-Guides folder
+
 ## 1. Setting up the environment
   * Cluster with an HA pair running ONTAP 9.5
   * Jumphost, CentOS-7-x86_64-Minimal-1810
@@ -34,9 +39,5 @@
     flex_code: XXXXXX
     snapm_code: XXXXXX
     ```
-## Structure
-
-> * main.yml contains the basic ONTAP Lab
-> * All the express guide playbooks are in the Express-Guides folder
 
     
