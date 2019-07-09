@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/SujalAhrodia/Summer-NetApp/master/Resources/NetAppLogo.jpg" width="300"> 
+
 # Summer-NetApp
 
 ## 1. Setting up the environment
