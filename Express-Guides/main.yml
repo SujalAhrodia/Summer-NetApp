@@ -30,20 +30,7 @@
       validate_certs: false
     loginv: &loginv
       vserver: "{{ netapp_vserver }}"
-  
-  
-  # vars_prompt:
-  #   - name: "NEW"
-  #     prompt: "Do you want to create a new NFS-enabled SVM (y/n)?"
-  #     # default: n
-  #     private: no
 
-  #   - name: "EXISTING"
-  #     prompt: "Do you want to configure NFS to an existing SVM (y/n)?"
-  #     # default: n
-  #     private: no
-  #     when: NEW != 'y'
-  
   vars_files:
     - ./variables.yml
 
