@@ -13,3 +13,18 @@ cifs_code: XXXXXX
 flex_code: XXXXXX
 snapm_code: XXXXXX
 
+#VServer settings 
+#
+# set 'create_new_cluster' = true; if you want to create a new SVM
+# set 'create_new_cluster' = false; if you want to just modify an existing SVM
+#
+create_new_cluster: XXX (true/false)
+netapp_vserver: XXX
+
+LIF_homeport: XXX
+# TBD
+# LIF_homenode: <enter node name here>
+LIF_address1: XXX.XXX.XXX.XXX
+LIF_address2: XXX.XXX.XXX.XXX 
+LIF_netmask: XXX.XXX.XXX.XXX
+
