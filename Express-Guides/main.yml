@@ -2,25 +2,6 @@
 - hosts: localhost
   gather_facts: no
   become: true
-  pre_tasks:
-
-    - pause:
-        prompt: "Do you want to create a new NFS-enabled SVM (y/n)?"
-      register: prompt
-
-    - set_fact:
-        NEW: "{{prompt.user_input}}"
-        EXISTING: "n"
-
-    - pause:
-        prompt: "Do you want to configure NFS to an existing SVM (y/n)?"
-      register: prompt
-      when: NEW == 'n'
-    
-    - set_fact:
-        EXISTING: "{{prompt.user_input}}"
-      when: NEW == 'n'
-      
   vars:
     login: &login
       hostname: "{{ netapp_hostname }}"
@@ -68,7 +49,7 @@
     vars: 
       <<: *login
       <<: *loginv
-    when: NEW == 'y'
+    when: create_new_cluster == true
   
   - import_role:
       name: NFS
@@ -76,4 +57,4 @@
     vars: 
       <<: *login
       <<: *loginv
-    when: EXISTING == 'y'
+    when: create_new_cluster == false
