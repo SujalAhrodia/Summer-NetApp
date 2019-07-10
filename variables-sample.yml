@@ -11,7 +11,7 @@ size: #in GB
 aggr: 
 
 #licenses
-nfs_code: XXXXXXX
+nfs_code: XXXXXXX,XXXXXX # license per node
 cifs_code: XXXXXX
 flex_code: XXXXXX
 snapm_code: XXXXXX
