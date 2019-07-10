@@ -1,11 +1,14 @@
+#Authentication Settings
 netapp_hostname: XXXX
 netapp_username: XXXX
 netapp_password: XXXX
-netapp_vserver: XXXX
+
 netapp_node1: XXXX
 netapp_node2: XXXX
-netapp_vol1: XXXX
-netapp_vol2: XXXX
+
+vol: XXXX
+size: #in GB
+aggr: 
 
 #licenses
 nfs_code: XXXXXXX
@@ -23,7 +26,7 @@ netapp_vserver: XXX
 
 LIF_homeport: XXX
 # TBD
-# LIF_homenode: <enter node name here>
+LIF_homenode: <enter node name here>
 LIF_address1: XXX.XXX.XXX.XXX
 LIF_address2: XXX.XXX.XXX.XXX 
 LIF_netmask: XXX.XXX.XXX.XXX
