@@ -1,6 +1,6 @@
-<img src="https://raw.githubusercontent.com/SujalAhrodia/Summer-NetApp/master/Resources/NetAppLogo.jpg" width="300"> 
+<img src="https://raw.githubusercontent.com/SujalAhrodia/Summer-NetApp/master/Resources/NetAppLogo.png" width="300"> 
 
-# Summer-NetApp
+# Summer-Internship 
 
 ## Structure
 
