@@ -1,6 +1,6 @@
-<img src="https://raw.githubusercontent.com/SujalAhrodia/Summer-NetApp/master/Resources/NetAppLogo.jpg" width="300"> 
+<img src="http://www.freelogovectors.net/wp-content/uploads/2018/04/netapp-logo.png" width="300"> 
 
-# Summer-NetApp
+# Summer-NetApp 
 
 ## Structure
 
