@@ -4,13 +4,13 @@
   become: true
   vars:
     login: &login
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
+      hostname: "{{ myhostname }}"
+      username: "{{ myusername }}"
+      password: "{{ mypassword }}"
       https: true
       validate_certs: false
     loginv: &loginv
-      vserver: "{{ vserver }}"
+      vserver: "{{ myvserver }}"
 
   vars_files:
     - ./variables.yml
