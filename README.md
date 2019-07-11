@@ -25,19 +25,19 @@
     ```
   * Fill the variable-sample file with your details and store it as variables.yml at the same level as main.yml.
     ```shell
-    netapp_hostname: XXXX
-    netapp_username: XXXX
-    netapp_password: XXXX
-    netapp_vserver: XXXX
-    netapp_node1: XXXX
-    netapp_node2: XXXX
-    netapp_vol1: XXXX
-    netapp_vol2: XXXX
+    hostname: XXXX
+    username: XXXX
+    password: XXXX
+    vserver: XXXX
+    node1: XXXX
+    node2: XXXX
+    vol: XXXX
+    vol2: XXXX
 
-    nfs_code: XXXXXXX
-    cifs_code: XXXXXX
-    flex_code: XXXXXX
-    snapm_code: XXXXXX
+    nfs_license: XXXXXXX
+    cifs_license: XXXXXX
+    flex_license: XXXXXX
+    snapm_license: XXXXXX
     ```
 
     

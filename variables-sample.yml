@@ -1,33 +1,38 @@
+---
 #Authentication Settings
-netapp_hostname: XXXX
-netapp_username: XXXX
-netapp_password: XXXX
-
-netapp_node1: XXXX
-netapp_node2: XXXX
-
-vol: XXXX
-size: #in GB
-aggr: 
+hostname: xxx.xxx.xxx.xxx
+username: xxx
+password: xxx
 
 #licenses
-nfs_code: XXXXXXX,XXXXXX # license per node
-cifs_code: XXXXXX
-flex_code: XXXXXX
-snapm_code: XXXXXX
+nfs_license: xxxxxxxxxxx, xxxxxxxxxxxx # license per node
+cifs_license: xxxxxxxxxxx, xxxxxxxxxxxx # license per node
+flex_license: xxxxxxxxxxx, xxxxxxxxxxxx # license per node
+snapm_license: xxxxxxxxxxx, xxxxxxxxxxxx # license per node
+
+#Node Settings
+node1: xxx
+node2: xxx
 
 #VServer settings 
 #
 # set 'create_new_cluster' = true; if you want to create a new SVM
 # set 'create_new_cluster' = false; if you want to just modify an existing SVM
 #
-create_new_cluster: XXX (true/false)
-netapp_vserver: XXX
+create_new_cluster: xxx #(true/false)
+vserver: xxx
 
-LIF_homeport: XXX
-# TBD
-LIF_homenode: <enter node name here>
-LIF_address1: XXX.XXX.XXX.XXX
-LIF_address2: XXX.XXX.XXX.XXX 
-LIF_netmask: XXX.XXX.XXX.XXX
+#Data LIF Settings
+LIF_homeport: xxx
+LIF_homenode: xxx
+LIF_address: xxx.xxx.xxx.xxx
+LIF_netmask: xxx.xxx.xxx.xxx
+
+#Volume Settings
+vol: xxx
+vol_size: xxx #in GB
+vol_aggr: xxx
+
+# netapp_qtree1: bob
+# netapp_qtree2: susan
 

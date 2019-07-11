@@ -4,13 +4,13 @@
   become: true
   vars:
     login: &login
-      hostname: "{{ netapp_hostname }}"
-      username: "{{ netapp_username }}"
-      password: "{{ netapp_password }}"
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
       https: true
       validate_certs: false
     loginv: &loginv
-      vserver: "{{ netapp_vserver }}"
+      vserver: "{{ vserver }}"
   vars_files:
     - ./variables.yml
 
@@ -33,7 +33,7 @@
       <<: *login
     with_together:
       - ['aggr1_cluster_1_01' , 'aggr1_cluster_1_02'] 
-      - ["{{ netapp_node1 }}" , "{{ netapp_node2 }}"]
+      - ["{{ node1 }}" , "{{ node2 }}"]
 
   - name: Create Subnet
     na_ontap_net_subnet:
@@ -49,7 +49,7 @@
   - name: Create SVM
     na_ontap_svm:
       state: present
-      name: "{{ netapp_vserver }}"
+      name: "{{ vserver }}"
       root_volume: svm1_root
       root_volume_aggregate: aggr1_cluster_1_01
       root_volume_security_style: ntfs
@@ -60,7 +60,7 @@
     na_ontap_license:
       state: present
       # serial_number: 
-      license_codes: ["{{nfs_code}}","{{cifs_code}}","{{flex_code}}","{{snapm_code}}"]
+      license_codes: ["{{nfs_license}}","{{cifs_license}}","{{flex_license}}","{{snapm_license}}"]
       <<: *login
 
   - name: Create Interface
@@ -78,7 +78,7 @@
       <<: *loginv
     with_together:
       - ['svm1_cifs_nfs_lif1','svm1_cifs_nfs_lif2']
-      - ["{{ netapp_node1 }}" , "{{ netapp_node2 }}"] 
+      - ["{{ node1 }}" , "{{ node2 }}"] 
       - [192.168.123.20, 192.168.123.21]
     
   - name: Create DNS
@@ -92,7 +92,7 @@
 
   - name: Configure LIFS with DNS
     na_ontap_command:
-      command: ['network', 'interface', 'modify','-vserver', '{{ netapp_vserver }}', '-lif', '{{ item }}', '-dns-zone', 'svm1.demo.netapp.com']
+      command: ['network', 'interface', 'modify','-vserver', '{{ vserver }}', '-lif', '{{ item }}', '-dns-zone', 'svm1.demo.netapp.com']
       <<: *login
     with_items:
       - svm1_cifs_nfs_lif1
@@ -111,8 +111,8 @@
   #     state: present
   #     cifs_server_name: svm1
   #     domain: demo.netapp.com
-  #     admin_user_name: "{{ netapp_username }}"
-  #     admin_password: "{{ netapp_password }}"
+  #     admin_user_name: "{{ username }}"
+  #     admin_password: "{{ password }}"
         # <<: *login
         # <<: *loginv
 
@@ -146,15 +146,15 @@
       <<: *login
       <<: *loginv
     with_together:
-      - ["{{netapp_vol1}}" , "{{netapp_vol2}}"]
-      - ['{{netapp_vol1}}' , '{{netapp_vol1}}/users'] 
+      - ["{{vol1}}" , "{{vol2}}"]
+      - ['{{vol1}}' , '{{vol1}}/users'] 
 
   #not idempotent 
   - name: Create Qtrees
     na_ontap_qtree:
       state: present
       name: "{{ item }}"
-      flexvol_name: "{{ netapp_vol2 }}"
+      flexvol_name: "{{ vol2 }}"
       <<: *login
       <<: *loginv
     with_items:
@@ -184,5 +184,5 @@
 
   - name: Applying jh1 policy to qtree
     na_ontap_command:
-      command: ['volume', 'qtree', 'modify','-vserver', '{{ netapp_vserver }}', '-volume', '{{ netapp_vol2 }}', '-qtree', '{{ netapp_qtree2 }}', '-export-policy', 'jh1-only']
+      command: ['volume', 'qtree', 'modify','-vserver', '{{ vserver }}', '-volume', '{{ vol2 }}', '-qtree', '{{ netapp_qtree2 }}', '-export-policy', 'jh1-only']
       <<: *login
