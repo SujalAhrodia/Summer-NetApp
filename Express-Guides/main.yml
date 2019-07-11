@@ -21,20 +21,20 @@
       name: netapp-lib
       state: present
   
-  # - name: Create Aggregates and wait 2 minutes until aggregate is online
-  #   na_ontap_aggregate:
-  #     state: present
-  #     service_state: online
-  #     unmount_volumes: True
-  #     name: "{{ item.0 }}"
-  #     disk_count: 5
-  #     wait_for_online: True
-  #     time_out: 120
-  #     nodes: "{{ item.1 }}"
-  #     <<: *login
-  #   with_together:
-  #     - ['aggr1_cluster_1_01' , 'aggr1_cluster_1_02'] 
-  #     - ["{{ node1 }}" , "{{ node2 }}"]
+  - name: Create Aggregates and wait 2 minutes until aggregate is online
+    na_ontap_aggregate:
+      state: present
+      service_state: online
+      unmount_volumes: True
+      name: "{{ item.0 }}"
+      disk_count: 5
+      wait_for_online: True
+      time_out: 120
+      nodes: "{{ item.1 }}"
+      <<: *login
+    with_together:
+      - ['aggr1_cluster_1_01' , 'aggr1_cluster_1_02'] 
+      - ["{{ node1 }}" , "{{ node2 }}"]
   
   - name: Add licenses
     na_ontap_license:
@@ -48,19 +48,3 @@
     vars:
       <<: *login
       <<: *loginv
-
-  # - import_role:
-  #     name: NFS
-  #     tasks_from: SVM1
-  #   vars: 
-  #     <<: *login
-  #     <<: *loginv
-  #   when: create_new_cluster == true
-  
-  # - import_role:
-  #     name: NFS
-  #     tasks_from: SVM2
-  #   vars: 
-  #     <<: *login
-  #     <<: *loginv
-  #   when: create_new_cluster == false
