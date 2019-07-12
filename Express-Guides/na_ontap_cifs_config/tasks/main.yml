@@ -42,6 +42,8 @@
     domains: "{{ dns_domain }}"
     nameservers: 192.168.123.136 ## currently IP of the winServer
     skip_validation: true
+    https: true
+    validate_certs: false
 
 - name: Create CiFS Server
   na_ontap_cifs_server:
@@ -53,6 +55,7 @@
     hostname: "{{ hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"
+    vserver: "{{ vserver }}"
     https: true
     validate_certs: false
 

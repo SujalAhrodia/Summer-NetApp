@@ -43,8 +43,14 @@
       license_codes: ["{{nfs_license}}","{{cifs_license}}","{{flex_license}}","{{snapm_license}}"]
       <<: *login
 
+  # - import_role:
+  #     name: na_ontap_nfs_config
+  #   vars:
+  #     <<: *login
+  #     <<: *loginv
+
   - import_role:
-      name: na_ontap_nfs_config
+      name: na_ontap_cifs_config
     vars:
       <<: *login
       <<: *loginv

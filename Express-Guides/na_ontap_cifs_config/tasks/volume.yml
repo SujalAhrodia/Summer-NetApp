@@ -44,12 +44,14 @@
     state: present
     share_name: "{{ vol }}"
     path: /
-    # share_properties: browsable,oplocks
+    share_properties: browsable,oplocks
     # symlink_properties: read_only,enable
     hostname: "{{ hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"
     vserver: "{{ vserver }}" 
+    https: true
+    validate_certs: false
 
     
 
