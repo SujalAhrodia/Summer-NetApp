@@ -32,33 +32,27 @@
     validate_certs: false
   when: create_new_cluster == false
 
-- name: Create a Data LIF
-  na_ontap_interface:
+- name: Create DNS
+  na_ontap_dns:
     state: present
-    interface_name: "{{ vserver }}_data_lif"
-    home_port: "{{ LIF_homeport }}"
-    home_node: "{{ node1 }}" # taking the first node as the home node for now
-    role: data
-    protocols: [nfs, cifs]
-    firewall_policy: mgmt-nfs
-    address: "{{ LIF_address }}"
-    netmask: "{{ LIF_netmask }}"
     hostname: "{{ hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"
-    vserver: "{{ vserver }}"
-    https: true
-    validate_certs: false
+    vserver:  "{{ vserver }}"
+    domains: "{{ dns_domain }}"
+    nameservers: 192.168.123.136 ## currently IP of the winServer
+    skip_validation: true
 
-- name: Create NFS server
-  na_ontap_nfs:
+- name: Create CiFS Server
+  na_ontap_cifs_server:
     state: present
-    service_state: started
-    nfsv3: enabled
+    cifs_server_name: "{{ vserver }}"
+    domain: "{{ dns_domain }}"
+    admin_user_name: "{{ ad_username }}" #AD server
+    admin_password: "{{ ad_password }}"
     hostname: "{{ hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"
-    vserver: "{{ vserver }}"
     https: true
     validate_certs: false
 

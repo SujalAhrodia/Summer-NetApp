@@ -1,0 +1,55 @@
+---
+#
+# Volume creation
+#
+
+# - name: Create Default ExportPolicyRule 
+#   na_ontap_export_policy_rule:
+#     state: present
+#     name: default
+#     client_match: 0.0.0.0/0
+#     ro_rule: any
+#     rw_rule: none
+#     rule_index: 1
+#     protocol: nfs
+#     super_user_security: none
+#     hostname: "{{ hostname }}"
+#     username: "{{ username }}"
+#     password: "{{ password }}"
+#     vserver: "{{ vserver }}"  
+#     https: true
+#     validate_certs: false
+
+- name: Create FlexVol
+  na_ontap_volume:
+    state: present
+    name: "{{ vol }}"
+    aggregate_name: "{{ vol_aggr }}"
+    size: "{{ vol_size }}"
+    size_unit: gb
+    space_guarantee: none
+    policy: default
+    percent_snapshot_space: 5
+    junction_path: /{{ vol }}
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    vserver: "{{ vserver }}"      
+    https: true
+    validate_certs: false
+    
+#Create a share of the volume to be mounted
+- name: Create CIFS share
+  na_ontap_cifs:
+    state: present
+    share_name: "{{ vol }}"
+    path: /
+    # share_properties: browsable,oplocks
+    # symlink_properties: read_only,enable
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    vserver: "{{ vserver }}" 
+
+    
+

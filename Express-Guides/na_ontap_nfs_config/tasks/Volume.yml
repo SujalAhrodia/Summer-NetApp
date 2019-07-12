@@ -1,6 +1,6 @@
 ---
 #
-# Existing SVM with NFS config
+# Volume creation
 #
 - name: Create Default ExportPolicyRule 
   na_ontap_export_policy_rule:
