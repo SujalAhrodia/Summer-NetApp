@@ -24,7 +24,7 @@
     home_port: "{{ LIF_homeport }}"
     home_node: "{{ item.0 }}" 
     role: data
-    protocols: [nfs, cifs, iscsi]
+    protocols: [iscsi]
     firewall_policy: mgmt-nfs
     address: "{{ item.2 }}"
     netmask: "{{ LIF_netmask }}"

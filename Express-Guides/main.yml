@@ -40,17 +40,23 @@
     na_ontap_license:
       state: present
       # serial_number: 
-      license_codes: ["{{nfs_license}}","{{cifs_license}}","{{flex_license}}","{{snapm_license}}"]
+      license_codes: ["{{nfs_license}}","{{cifs_license}}","{{flex_license}}","{{snapm_license}}", "{{iscsi_license}}"]
       <<: *login
 
-  - import_role:
-      name: na_ontap_nfs_config
-    vars:
-      <<: *login
-      <<: *loginv
+  # - import_role:
+  #     name: na_ontap_nfs_config
+  #   vars:
+  #     <<: *login
+  #     <<: *loginv
 
   # - import_role:
   #     name: na_ontap_cifs_config
   #   vars:
   #     <<: *login
   #     <<: *loginv
+
+  - import_role:
+      name: na_ontap_iscsi_config
+    vars:
+      <<: *login
+      <<: *loginv
