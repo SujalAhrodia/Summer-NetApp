@@ -1,0 +1,69 @@
+---
+#
+# Volume creation
+#
+- name: Create Default ExportPolicyRule 
+  na_ontap_export_policy_rule:
+    state: present
+    name: default
+    client_match: 0.0.0.0/0
+    ro_rule: any
+    rw_rule: none
+    rule_index: 1
+    protocol: nfs
+    super_user_security: none
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    vserver: "{{ vserver }}"  
+    https: true
+    validate_certs: false
+
+- name: Create Export Policy
+  na_ontap_export_policy:
+    state: present
+    name: "{{ vol }}"
+    vserver: "{{ vserver }}"
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    https: true
+    validate_certs: false
+
+- name: Create ExportPolicyRule
+  na_ontap_export_policy_rule:
+    state: present
+    name: "{{ vol }}"
+    client_match: 0.0.0.0/0
+    ro_rule: any
+    rw_rule: any
+    rule_index: 1
+    protocol: nfs
+    super_user_security: any
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    vserver: "{{ vserver }}"  
+    https: true
+    validate_certs: false
+
+- name: Create FlexVol
+  na_ontap_volume:
+    state: present
+    name: "{{ vol }}"
+    aggregate_name: "{{ vol_aggr }}"
+    size: "{{ vol_size }}"
+    size_unit: gb
+    space_guarantee: none
+    policy: "{{ vol }}"
+    percent_snapshot_space: 5
+    junction_path: /{{ vol }}
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    vserver: "{{ vserver }}"      
+    https: true
+    validate_certs: false
+    
+    
+

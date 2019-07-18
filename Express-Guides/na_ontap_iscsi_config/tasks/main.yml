@@ -22,7 +22,7 @@
     state: present
     interface_name: "{{ item.1 }}"
     home_port: "{{ LIF_homeport }}"
-    home_node: "{{ item.0 }}" # taking the first node as the home node for now
+    home_node: "{{ item.0 }}" 
     role: data
     protocols: [nfs, cifs, iscsi]
     firewall_policy: mgmt-nfs
@@ -39,6 +39,8 @@
     - ["{{ vserver }}_data_lif1", "{{ vserver }}_data_lif2"]
     - [192.168.123.20, 192.168.123.21]
 
+- import_tasks: ./volume.yml
+
 - name: Create LUN
   na_ontap_lun:
     state: present
@@ -47,7 +49,18 @@
     size: "{{ LUN_size }}"
     size_unit: gb
     ostype: "{{ LUN_os }}"
-    space_reserve: True
+    # space_reserve: True
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    vserver: "{{ vserver }}"
+    https: true
+    validate_certs: false
+
+- name: Create iscsi service
+  na_ontap_iscsi:
+    state: present
+    service_state: started
     hostname: "{{ hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"
