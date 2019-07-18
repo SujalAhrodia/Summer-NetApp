@@ -45,6 +45,24 @@
     https: true
     validate_certs: false
 
+- name: Create a Data LIF
+  na_ontap_interface:
+    state: present
+    interface_name: "{{ vserver }}_data_lif"
+    home_port: "{{ LIF_homeport }}"
+    home_node: "{{ node1 }}" # taking the first node as the home node for now
+    role: data
+    protocols: [nfs, cifs]
+    firewall_policy: mgmt-nfs
+    address: "{{ LIF_address }}"
+    netmask: "{{ LIF_netmask }}"
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    vserver: "{{ vserver }}"
+    https: true
+    validate_certs: false
+    
 - name: Create CiFS Server
   na_ontap_cifs_server:
     state: present
