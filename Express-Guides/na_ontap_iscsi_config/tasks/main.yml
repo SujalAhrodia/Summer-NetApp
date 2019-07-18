@@ -67,3 +67,29 @@
     vserver: "{{ vserver }}"
     https: true
     validate_certs: false
+
+- name: Create iSCSI Igroup
+  na_ontap_igroup:
+    state: present
+    name: ansibleIgroup1
+    initiator_group_type: iscsi
+    ostype: linux
+    initiators: iqn.1994-05.com.redhat:9ac64cf72a64
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    vserver: "{{ vserver }}"
+    https: true
+    validate_certs: false
+
+- name: Create LUN mapping
+  na_ontap_lun_map:
+    state: present
+    initiator_group_name: ansibleIgroup1
+    path: /vol/engineering/LUN1
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    vserver: "{{ vserver }}"
+    https: true
+    validate_certs: false
