@@ -1,0 +1,56 @@
+---
+#
+# Create a new SVM
+# 
+- name: Create a new SVM
+  na_ontap_svm:
+    state: present
+    name: "{{ vserver }}"
+    root_volume: svm1_root
+    root_volume_aggregate: "{{ vol_aggr }}"
+    root_volume_security_style: unix
+    allowed_protocols: [nfs, cifs, iscsi]
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    https: true
+    validate_certs: false
+  when: create_new_vserver == true
+
+- name: Create a Data LIF
+  na_ontap_interface:
+    state: present
+    interface_name: "{{ item.1 }}"
+    home_port: "{{ LIF_homeport }}"
+    home_node: "{{ item.0 }}" # taking the first node as the home node for now
+    role: data
+    protocols: [nfs, cifs, iscsi]
+    firewall_policy: mgmt-nfs
+    address: "{{ item.2 }}"
+    netmask: "{{ LIF_netmask }}"
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    vserver: "{{ vserver }}"
+    https: true
+    validate_certs: false
+  with_together:
+    - ["{{ node1 }}", "{{ node2 }}"]
+    - ["{{ vserver }}_data_lif1", "{{ vserver }}_data_lif2"]
+    - [192.168.123.20, 192.168.123.21]
+
+- name: Create LUN
+  na_ontap_lun:
+    state: present
+    name: "{{ LUN_name }}"
+    flexvol_name: "{{ vol }}"
+    size: "{{ LUN_size }}"
+    size_unit: gb
+    ostype: "{{ LUN_os }}"
+    space_reserve: True
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    vserver: "{{ vserver }}"
+    https: true
+    validate_certs: false
