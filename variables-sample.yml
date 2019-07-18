@@ -16,10 +16,10 @@ node2: xxx
 
 #VServer settings 
 #
-# set 'create_new_cluster' = true; if you want to create a new SVM
-# set 'create_new_cluster' = false; if you want to just modify an existing SVM
+# set 'create_new_vserver' = true; if you want to create a new SVM
+# set 'create_new_vserver' = false; if you want to just modify an existing SVM
 #
-create_new_cluster: xxx #(true/false)
+create_new_vserver: xxx #(true/false)
 vserver: xxx
 
 #Data LIF Settings

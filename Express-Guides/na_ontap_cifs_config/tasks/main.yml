@@ -7,7 +7,7 @@
     state: present
     name: "{{ vserver }}"
     root_volume: svm1_root
-    root_volume_aggregate: "{{ vol }}"
+    root_volume_aggregate: "{{ vol_aggr }}"
     root_volume_security_style: unix
     allowed_protocols: [nfs, cifs]
     hostname: "{{ hostname }}"
@@ -15,7 +15,7 @@
     password: "{{ password }}"
     https: true
     validate_certs: false
-  when: create_new_cluster == true
+  when: create_new_vserver == true
 
 #
 # Existing SVM without NFS enabled
@@ -30,7 +30,7 @@
     password: "{{ password }}"
     https: true
     validate_certs: false
-  when: create_new_cluster == false
+  when: create_new_vserver == false
 
 - name: Create DNS
   na_ontap_dns:

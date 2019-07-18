@@ -15,7 +15,7 @@
     password: "{{ password }}"
     https: true
     validate_certs: false
-  when: create_new_cluster == true
+  when: create_new_vserver == true
 
 #
 # Existing SVM without NFS enabled
@@ -30,7 +30,7 @@
     password: "{{ password }}"
     https: true
     validate_certs: false
-  when: create_new_cluster == false
+  when: create_new_vserver == false
 
 - name: Create a Data LIF
   na_ontap_interface:
