@@ -17,6 +17,21 @@
     validate_certs: false
   when: create_new_vserver == true
 
+#
+# Existing SVM without NFS enabled
+#
+- name: Modify existing SVM
+  na_ontap_svm:
+    state: present
+    name: "{{ vserver }}"
+    allowed_protocols: [iscsi]
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    https: true
+    validate_certs: false
+  when: create_new_vserver == false
+
 - name: Create a Data LIF
   na_ontap_interface:
     state: present
@@ -38,6 +53,7 @@
     - ["{{ node1 }}", "{{ node2 }}"]
     - ["{{ vserver }}_data_lif1", "{{ vserver }}_data_lif2"]
     - ["{{ LIF_address1 }}", "{{ LIF_address2 }}"]
+  when: create_new_vserver == false
 
 - import_tasks: ./volume.yml
 
@@ -56,7 +72,7 @@
     https: true
     validate_certs: false
 
-- name: Create iSCSI service
+- name: Create/Configure iSCSI service
   na_ontap_iscsi:
     state: present
     service_state: started
