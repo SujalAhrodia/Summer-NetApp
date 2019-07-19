@@ -10,7 +10,7 @@
     size: "{{ vol_size }}"
     size_unit: gb
     space_guarantee: none
-    policy: "{{ vol }}"
+    policy: default
     percent_snapshot_space: 5
     junction_path: /{{ vol }}
     hostname: "{{ hostname }}"

@@ -37,7 +37,7 @@
   with_together:
     - ["{{ node1 }}", "{{ node2 }}"]
     - ["{{ vserver }}_data_lif1", "{{ vserver }}_data_lif2"]
-    - [192.168.123.20, 192.168.123.21]
+    - ["{{ LIF_address1 }}", "{{ LIF_address2 }}"]
 
 - import_tasks: ./volume.yml
 
@@ -49,7 +49,6 @@
     size: "{{ LUN_size }}"
     size_unit: gb
     ostype: "{{ LUN_os }}"
-    # space_reserve: True
     hostname: "{{ hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"
@@ -57,7 +56,7 @@
     https: true
     validate_certs: false
 
-- name: Create iscsi service
+- name: Create iSCSI service
   na_ontap_iscsi:
     state: present
     service_state: started
@@ -71,10 +70,10 @@
 - name: Create iSCSI Igroup
   na_ontap_igroup:
     state: present
-    name: ansibleIgroup1
+    name: "{{ Igroup_name }}"
     initiator_group_type: iscsi
-    ostype: linux
-    initiators: iqn.1994-05.com.redhat:52f3a5a9047
+    ostype: "{{ OS_type }}"
+    initiators: "{{ Initiator }}"
     hostname: "{{ hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"
@@ -85,8 +84,8 @@
 - name: Create LUN mapping
   na_ontap_lun_map:
     state: present
-    initiator_group_name: ansibleIgroup1
-    path: /vol/engineering/LUN1
+    initiator_group_name: "{{ Igroup_name }}"
+    path: "{{ LUN_path }}" 
     hostname: "{{ hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"
