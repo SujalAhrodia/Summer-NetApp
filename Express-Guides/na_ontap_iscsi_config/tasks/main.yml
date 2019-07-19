@@ -9,7 +9,7 @@
     root_volume: svm1_root
     root_volume_aggregate: "{{ vol_aggr }}"
     root_volume_security_style: unix
-    allowed_protocols: [nfs, cifs, iscsi]
+    allowed_protocols: [iscsi]
     hostname: "{{ hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"
@@ -74,7 +74,7 @@
     name: ansibleIgroup1
     initiator_group_type: iscsi
     ostype: linux
-    initiators: iqn.1994-05.com.redhat:9ac64cf72a64
+    initiators: iqn.1994-05.com.redhat:52f3a5a9047
     hostname: "{{ hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"
