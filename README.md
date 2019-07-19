@@ -21,8 +21,8 @@
     ```
   <!-- * Install pip for python2 
     ```shell
-    $ sudo apt install python-pip -->
-    ```
+    $ sudo apt install python-pip 
+    ```-->
   * Fill the variable-sample file with your details and store it as variables.yml at the same level as main.yml.
     ```shell
     myhostname: xxx.xxx.xxx.xxx
