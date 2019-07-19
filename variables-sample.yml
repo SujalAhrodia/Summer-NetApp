@@ -1,14 +1,15 @@
 ---
 #Authentication Settings
-hostname: xxx.xxx.xxx.xxx
-username: xxx
-password: xxx
+myhostname: xxx.xxx.xxx.xxx
+myusername: xxx
+mypassword: xxx
 
 #licenses
 nfs_license: xxxxxxxxxxx, xxxxxxxxxxxx # license per node
 cifs_license: xxxxxxxxxxx, xxxxxxxxxxxx # license per node
 flex_license: xxxxxxxxxxx, xxxxxxxxxxxx # license per node
 snapm_license: xxxxxxxxxxx, xxxxxxxxxxxx # license per node
+iscsi_license: xxxxxxxxxxx, xxxxxxxxxxxx # license per node
 
 #Node Settings
 node1: xxx
@@ -20,12 +21,13 @@ node2: xxx
 # set 'create_new_vserver' = false; if you want to just modify an existing SVM
 #
 create_new_vserver: xxx #(true/false)
-vserver: xxx
+myvserver: xxx
 
 #Data LIF Settings
 LIF_homeport: xxx
 LIF_homenode: xxx
-LIF_address: xxx.xxx.xxx.xxx
+LIF_address1: xxx.xxx.xxx.xxx
+LIF_address2: xxx.xxx.xxx.xxx
 LIF_netmask: xxx.xxx.xxx.xxx
 
 #Volume Settings
@@ -35,4 +37,22 @@ vol_aggr: xxx
 
 # netapp_qtree1: bob
 # netapp_qtree2: susan
+
+#DNS Settings
+dns_domain: xxx.xxx.com
+
+#AD Settings
+ad_username: xxx
+ad_password: xxx
+
+#LUN Settings
+LUN_name: xxx
+LUN_size: x #in GB
+LUN_os: xxx
+LUN_path: /xxx/xxx/xxx
+
+#Igroup Settings
+Igroup_name: xxx
+OS_type: xxx
+Initiator: xxxxxxxxxxx
 

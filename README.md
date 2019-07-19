@@ -19,25 +19,24 @@
     ```shell
     $ yum install ansible
     ```
-  * Install pip for python2 
+  <!-- * Install pip for python2 
     ```shell
-    $ sudo apt install python-pip
+    $ sudo apt install python-pip -->
     ```
   * Fill the variable-sample file with your details and store it as variables.yml at the same level as main.yml.
     ```shell
-    hostname: XXXX
-    username: XXXX
-    password: XXXX
-    vserver: XXXX
-    node1: XXXX
-    node2: XXXX
-    vol: XXXX
-    vol2: XXXX
+    myhostname: xxx.xxx.xxx.xxx
+    myusername: xxx
+    mypassword: xxx
 
-    nfs_license: XXXXXXX
-    cifs_license: XXXXXX
-    flex_license: XXXXXX
-    snapm_license: XXXXXX
+    nfs_license: xxxxxxxxxxx, xxxxxxxxxxxx 
+    cifs_license: xxxxxxxxxxx, xxxxxxxxxxxx 
+    flex_license: xxxxxxxxxxx, xxxxxxxxxxxx 
+    snapm_license: xxxxxxxxxxx, xxxxxxxxxxxx 
+    iscsi_license: xxxxxxxxxxx, xxxxxxxxxxxx 
+
+    node1: xxx
+    node2: xxx
     ```
 
     
