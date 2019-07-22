@@ -28,7 +28,7 @@
     hostname: "{{ hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"
-    https: true
+    https: trueq
     validate_certs: false
   when: create_new_vserver == false
 
