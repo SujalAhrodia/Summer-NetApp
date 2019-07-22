@@ -55,8 +55,14 @@
   #     <<: *login
   #     <<: *loginv
 
+  # - import_role:
+  #     name: na_ontap_iscsi_config
+  #   vars:
+  #     <<: *login
+  #     <<: *loginv
+  
   - import_role:
-      name: na_ontap_iscsi_config
+      name: na_ontap_vol_move
     vars:
       <<: *login
       <<: *loginv
