@@ -9,7 +9,7 @@
     root_volume: svm1_root
     root_volume_aggregate: "{{ vol_aggr }}"
     root_volume_security_style: unix
-    allowed_protocols: [iscsi]
+    allowed_protocols: [fcp]
     hostname: "{{ hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"
@@ -18,13 +18,13 @@
   when: create_new_vserver == true
 
 #
-# Existing SVM without iSCSI enabled
+# Existing SVM without FCP enabled
 #
 - name: Modify existing SVM
   na_ontap_svm:
     state: present
     name: "{{ vserver }}"
-    allowed_protocols: [iscsi]
+    allowed_protocols: [fcp]
     hostname: "{{ hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"
@@ -32,6 +32,7 @@
     validate_certs: false
   when: create_new_vserver == false
 
+# Not sure about this
 - name: Create a Data LIF
   na_ontap_interface:
     state: present
@@ -65,43 +66,6 @@
     size: "{{ LUN_size }}"
     size_unit: gb
     ostype: "{{ LUN_os }}"
-    hostname: "{{ hostname }}"
-    username: "{{ username }}"
-    password: "{{ password }}"
-    vserver: "{{ vserver }}"
-    https: true
-    validate_certs: false
-
-- name: Create/Configure iSCSI service
-  na_ontap_iscsi:
-    state: present
-    service_state: started
-    hostname: "{{ hostname }}"
-    username: "{{ username }}"
-    password: "{{ password }}"
-    vserver: "{{ vserver }}"
-    https: true
-    validate_certs: false
-
-- name: Create iSCSI Igroup
-  na_ontap_igroup:
-    state: present
-    name: "{{ Igroup_name }}"
-    initiator_group_type: iscsi
-    ostype: "{{ OS_type }}"
-    initiators: "{{ Initiator }}"
-    hostname: "{{ hostname }}"
-    username: "{{ username }}"
-    password: "{{ password }}"
-    vserver: "{{ vserver }}"
-    https: true
-    validate_certs: false
-
-- name: Create LUN mapping
-  na_ontap_lun_map:
-    state: present
-    initiator_group_name: "{{ Igroup_name }}"
-    path: "{{ LUN_path }}" 
     hostname: "{{ hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"

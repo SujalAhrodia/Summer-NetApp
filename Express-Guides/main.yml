@@ -40,7 +40,7 @@
     na_ontap_license:
       state: present
       # serial_number: 
-      license_codes: ["{{nfs_license}}","{{cifs_license}}","{{flex_license}}","{{snapm_license}}", "{{iscsi_license}}"]
+      license_codes: ["{{nfs_license}}","{{cifs_license}}","{{flex_license}}","{{snapm_license}}", "{{iscsi_license}}", "{{fcp_license}}"]
       <<: *login
 
   # - import_role:
