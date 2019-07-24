@@ -61,8 +61,14 @@
   #     <<: *login
   #     <<: *loginv
   
+  # - import_role:
+  #     name: na_ontap_vol_move
+  #   vars:
+  #     <<: *login
+  #     <<: *loginv
+
   - import_role:
-      name: na_ontap_vol_move
+      name: na_ontap_snmp
     vars:
       <<: *login
       <<: *loginv

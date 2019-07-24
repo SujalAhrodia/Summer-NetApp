@@ -1,0 +1,27 @@
+---
+# Simple Network Management Protocol
+
+- name: Create SNMP community
+  na_ontap_snmp:
+    state: present
+    community_name: community_name
+    access_control: 'ro'
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    https: true
+    validate_certs: false
+
+# - name: Create User
+#   na_ontap_user:
+#     state: present
+#     name: SampleUser
+#     applications: snmp
+#     authentication_method: community
+#     role_name: vsadmin
+#     vserver: ansibleVServer
+#     hostname: "{{ hostname }}"
+#     username: "{{ username }}"
+#     password: "{{ password }}"
+#     https: true
+#     validate_certs: false
