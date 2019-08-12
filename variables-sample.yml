@@ -56,3 +56,24 @@ Igroup_name: xxx
 OS_type: xxx
 Initiator: xxxxxxxxxxx
 
+#Peering Settings
+cluster1: xxx
+cluster1_host: xxx.xxx.xxx.xxx
+cluster1_user: xxx  
+cluster1_pwd: xxx
+
+cluster2: xxx
+cluster2_host: xxx.xxx.xxx.xxx
+cluster2_user: xxx
+cluster2_pwd: xxx
+
+#Cluster nodes
+c1node1: xxx
+c2node1: xxx
+
+#Intercluster LIF Settings
+ILIF_homeport: xxx
+ILIF_address1: xxx.xxx.xxx.xxx
+ILIF_address2: xxx.xxx.xxx.xxx
+ILIF_netmask: xxx.xxx.xxx.xxx
+
