@@ -21,26 +21,26 @@
       name: netapp-lib
       state: present
   
-  - name: Create Aggregates and wait 2 minutes until aggregate is online
-    na_ontap_aggregate:
-      state: present
-      service_state: online
-      unmount_volumes: True
-      name: "{{ item.0 }}"
-      disk_count: 5
-      wait_for_online: True
-      time_out: 120
-      nodes: "{{ item.1 }}"
-      <<: *login
-    with_together:
-      - ['aggr1_cluster_1_01' , 'aggr1_cluster_1_02'] 
-      - ["{{ node1 }}" , "{{ node2 }}"]
+  # - name: Create Aggregates and wait 2 minutes until aggregate is online
+  #   na_ontap_aggregate:
+  #     state: present
+  #     service_state: online
+  #     unmount_volumes: True
+  #     name: "{{ item.0 }}"
+  #     disk_count: 5
+  #     wait_for_online: True
+  #     time_out: 120
+  #     nodes: "{{ item.1 }}"
+  #     <<: *login
+  #   with_together:
+  #     - ['aggr1_cluster_1_01' , 'aggr1_cluster_1_02'] 
+  #     - ["{{ node1 }}" , "{{ node2 }}"]
   
-  - name: Add licenses
-    na_ontap_license:
-      state: present
-      license_codes: ["{{nfs_license}}","{{cifs_license}}","{{flex_license}}","{{snapm_license}}", "{{iscsi_license}}", "{{fcp_license}}"]
-      <<: *login
+  # - name: Add licenses
+  #   na_ontap_license:
+  #     state: present
+  #     license_codes: ["{{nfs_license}}","{{cifs_license}}","{{flex_license}}","{{snapm_license}}", "{{iscsi_license}}", "{{fcp_license}}"]
+  #     <<: *login
 
   # - import_role:
   #     name: na_ontap_nfs_config
@@ -68,6 +68,3 @@
 
   - import_role:
       name: na_ontap_clus_peer
-    vars:
-      <<: *login
-      vserver: "{{ cluster }}"

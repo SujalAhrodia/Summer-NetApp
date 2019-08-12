@@ -2,29 +2,24 @@
 - name: Create intercluster LIFs
   na_ontap_interface:
     state: present
-    interface_name: "{{cluster}}_ilif1"
-    home_port: "{{ LIF_homeport }}"
-    home_node: "{{ node1 }}"
-    role: data
-    protocols: [nfs, cifs]
+    interface_name: "{{ item.4 }}_ilif1"
+    home_port: "{{ ILIF_homeport }}"
+    home_node: "{{ item.4 }}"
+    role: intercluster
     firewall_policy: mgmt-nfs
-    address: "{{ LIF_address1 }}"
-    netmask: "{{ LIF_netmask }}"
-    vserver: "{{ cluster }}"
-    hostname: "{{ hostname }}"
-    username: "{{ username }}"
-    password: "{{ password }}"
+    address: "{{ item.5 }}"
+    netmask: "{{ ILIF_netmask }}"
+    vserver: "{{ item.3 }}"
+    hostname: "{{ item.0 }}"
+    username: "{{ item.1 }}"
+    password: "{{ item.2 }}"
     https: true
     validate_certs: false
-  
-# - name: Create a Data LIF
-#   na_ontap_interface:
-#     state: present
-#     interface_name: "{{ vserver }}_data_lif"
-#     home_port: "{{ LIF_homeport }}"
-#     home_node: "{{ node1 }}" # taking the first node as the home node for now
-#     role: data
-#     protocols: [nfs, cifs]
-#     firewall_policy: mgmt-nfs
-#     address: "{{ LIF_address1 }}"
-#     netmask: "{{ LIF_netmask }}"
+  with_together:
+    - ["{{cluster1_host}}", "{{cluster2_host}}"]
+    - ["{{cluster1_user}}", "{{cluster2_user}}"]
+    - ["{{cluster1_pwd}}", "{{cluster2_pwd}}"]
+    - ["{{cluster1}}", "{{cluster2}}"]
+    - ["{{c1node1}}", "{{c2node1}}"]
+    - ["{{ ILIF_address1 }}", "{{ ILIF_address2 }}"]
+
