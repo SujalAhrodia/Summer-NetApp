@@ -23,3 +23,15 @@
     - ["{{c1node1}}", "{{c2node1}}"]
     - ["{{ ILIF_address1 }}", "{{ ILIF_address2 }}"]
 
+- name: Create a cluster peer
+  na_ontap_cluster_peer:
+    state: present
+    source_intercluster_lifs: "{{ILIF_address2}}"
+    dest_intercluster_lifs: "{{ILIF_address1}}"
+    passphrase: "{{passphrase}}"
+    hostname: "{{ cluster2_host }}"
+    username: "{{ cluster2_user }}"
+    password: "{{ cluster2_pwd }}"
+    dest_hostname: "{{ cluster1_host }}"
+    https: true
+    validate_certs: false

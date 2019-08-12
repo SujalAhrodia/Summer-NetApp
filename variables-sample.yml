@@ -77,3 +77,6 @@ ILIF_address1: xxx.xxx.xxx.xxx
 ILIF_address2: xxx.xxx.xxx.xxx
 ILIF_netmask: xxx.xxx.xxx.xxx
 
+#Passphrase
+passphrase: xxxxxxxx
+
