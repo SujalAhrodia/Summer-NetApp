@@ -41,7 +41,7 @@
     role: data
     protocols: [nfs, cifs]
     firewall_policy: mgmt-nfs
-    address: "{{ LIF_address }}"
+    address: "{{ LIF_address1 }}"
     netmask: "{{ LIF_netmask }}"
     hostname: "{{ hostname }}"
     username: "{{ username }}"
