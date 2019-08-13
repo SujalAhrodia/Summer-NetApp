@@ -61,11 +61,13 @@ cluster1: xxx
 cluster1_host: xxx.xxx.xxx.xxx
 cluster1_user: xxx  
 cluster1_pwd: xxx
+cluster1_svm: xxx
 
 cluster2: xxx
 cluster2_host: xxx.xxx.xxx.xxx
 cluster2_user: xxx
 cluster2_pwd: xxx
+cluster2_svm: xxx
 
 #Cluster nodes
 c1node1: xxx
