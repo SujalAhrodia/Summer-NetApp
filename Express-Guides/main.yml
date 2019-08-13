@@ -36,6 +36,28 @@
   #     - ['aggr1_cluster_1_01' , 'aggr1_cluster_1_02'] 
   #     - ["{{ node1 }}" , "{{ node2 }}"]
   
+  # - name: Create Aggregates in the 2 clusters
+  #   na_ontap_aggregate:
+  #     state: present
+  #     service_state: online
+  #     unmount_volumes: True
+  #     name: "{{ item.3 }}"
+  #     disk_count: 5
+  #     wait_for_online: True
+  #     time_out: 120
+  #     nodes: "{{ item.4 }}"
+  #     hostname: "{{ item.0 }}"
+  #     username: "{{ item.1 }}"
+  #     password: "{{ item.2 }}"
+  #     https: true
+  #     validate_certs: false
+  #   with_together:
+  #     - ["{{cluster1_host}}", "{{cluster2_host}}"]
+  #     - ["{{cluster1_user}}", "{{cluster2_user}}"]
+  #     - ["{{cluster1_pwd}}", "{{cluster2_pwd}}"]
+  #     - ['aggr1_c1_01' , 'aggr1_c2_01'] 
+  #     - ["{{ c1node1 }}" , "{{ c2node1 }}"]
+
   # - name: Add licenses
   #   na_ontap_license:
   #     state: present

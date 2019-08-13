@@ -35,3 +35,19 @@
     dest_hostname: "{{ cluster1_host }}"
     https: true
     validate_certs: false
+
+# Create data SVMS
+
+- name: Source vserver peer create
+  na_ontap_vserver_peer:
+    state: present
+    peer_vserver: "{{cluster2_svm}}"
+    peer_cluster: "{{cluster2}}"
+    vserver: "{{cluster1_svm}}"
+    applications: snapmirror
+    hostname: "{{ cluster1_host }}"
+    username: "{{ cluster1_user }}"
+    password: "{{ cluster1_pwd }}"
+    dest_hostname: "{{ cluster2_host }}"
+    https: true
+    validate_certs: false
